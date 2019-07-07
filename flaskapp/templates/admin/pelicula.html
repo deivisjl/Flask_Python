@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block content %}
+   <div class="row">
+       <div class="col-md-12">
+           <div class="card">
+               <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <h4>Películas</h4>
+                        </div>
+                        <div class="col-6">
+                            <a href="{{ url_for('pelicula.agregar') }}" class="btn btn-primary float-right">Nueva</a>
+                        </div>
+                    </div>
+                   <table class="table table-bordered table-hover">
+                       <thead>
+                           <tr>
+                                <th>Id</th>
+                                <th>Título</th>
+                                <th>Imagen</th>
+                                <th>Director</th>
+                                <th></th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                            {% for pelicula in peliculas.items %}
+                                <tr>
+                                    <td>{{ pelicula.id }}</td>
+                                    <td>{{ pelicula.titulo }}</td>
+                                    <td><img src="{{ url_for('static',filename='img/' + pelicula.img_url) }}" style="width: 50px; display:block; margin:auto"></td>
+                                    <td>{{ pelicula.director }}</td>
+                                    <td><a href="{{ url_for('pelicula.borrar_pelicula', pelicula_id=pelicula.id) }}" class="btn btn-danger"><i class="fa fa-trash"></i></a></td>
+                                </tr>
+                            {% endfor %}
+                       </tbody>
+                   </table>
+                   {% for page_num in peliculas.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                        {% if page_num %}
+                            {% if peliculas.page == page_num %}
+                                <a class="btn btn-info mb-4" href="{{ url_for('pelicula.peliculas',page=page_num)}}">{{ page_num }}</a>
+                            {% else %}
+                                <a class="btn btn-outline-info mb-4" href="{{ url_for('pelicula.peliculas',page=page_num)}}">{{ page_num }}</a>
+                            {% endif %}
+                        {% else %}
+                            ...
+                        {% endif %}
+                    {% endfor %}
+               </div>
+           </div>
+       </div>
+   </div>
+{% endblock %}

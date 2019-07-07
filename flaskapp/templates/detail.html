@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h1></h1>
+  <div class="row">
+      <div class="col-md-12">
+          <div class="card">
+              <div class="row no-gutters">
+                <div class="col-md-4">
+                  <img src="{{ url_for('static',filename='img/' + pelicula.img_url) }}" class="card-img" alt="...">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ pelicula.titulo}}</h5>
+                    <form action="" method="POST">
+                        {{ form.hidden_tag() }}
+                        <div class="form-group">
+                            {{ form.dato.label(class="form-control-label") }}
+                            {% if form.dato.errors  %}
+                                {{ form.dato(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.dato.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.dato(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                          {{ form.submit(class="btn btn-primary") }}
+                        </div>
+                      </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-md-12">
+          <div class="card">
+              <div class="card-body">
+                  <div class="row text-center">
+                      <div class="col-md-12">
+                          <span class="badge badge-pill badge-success">Positivo</span>
+                          <!-- <span class="badge badge-pill badge-warning">Incertidumbre</span>  -->
+                          <span class="badge badge-pill badge-danger">Negativo</span>
+                      </div>
+                  </div>
+                  <ul class="list-group">
+                      {% for comentario in comentarios.items %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ comentario.comentario }}
+                            {% if comentario.sentimiento == 1%}
+                              <span class="badge badge-success badge-pill">{{ comentario.prediccion }}%</span>
+                            {% else %}
+                              <span class="badge badge-danger badge-pill">{{ comentario.prediccion }}%</span>
+                            {% endif%}
+                            
+                        </li>
+                      {% endfor %}
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </div>
+{% endblock %}

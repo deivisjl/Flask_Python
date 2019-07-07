@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="row">
+        {% for pelicula in peliculas.items %}
+            {% if loop.index % 5 == 0 %}
+                <div class="row">
+            {% endif %}
+                    <div class="col-md-3 col-sm-6">
+                        <a href="{{ url_for('detail.details',pelicula_id=pelicula.id) }}" class="link">
+                            <div class="card" style="width: 100%;">
+                                <img class="card-img" src="{{ url_for('static',filename='img/' + pelicula.img_url) }}" class="card-img-top" alt="...">
+                                <div class="card-body card-custom">
+                                <h5 class="card-title text-center">{{ pelicula.titulo}}</h5>
+                                <p class="card-text text-center text-center">{{ pelicula.director }}</p>                
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+            {% if (loop.index+1) % 5 == 0 %}
+                </div>
+            {% endif %}
+        {% endfor %}  
+    </div>
+    <div class="row text-center">
+        <div class="col-md-12">
+            {% for page_num in peliculas.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                {% if page_num %}
+                    {% if peliculas.page == page_num %}
+                        <a class="btn btn-info mb-4" href="{{ url_for('main.home',page=page_num)}}">{{ page_num }}</a>
+                    {% else %}
+                        <a class="btn btn-outline-info mb-4" href="{{ url_for('main.home',page=page_num)}}">{{ page_num }}</a>
+                    {% endif %}
+                {% else %}
+                    ...
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>  
+{% endblock %}
